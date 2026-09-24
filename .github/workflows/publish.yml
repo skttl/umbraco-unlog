@@ -1,0 +1,106 @@
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v17.*'
+      - 'v18.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag and release branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v(17|18)\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a tag such as v17.0.0 or v18.0.0" >&2
+            exit 1
+          fi
+          major="${BASH_REMATCH[1]}"
+          if [[ "$major" == 17 ]]; then
+            branch='v17/main'
+            range='[17.0.0,18.0.0)'
+          else
+            branch='main'
+            range='[18.0.0,19.0.0)'
+          fi
+          git merge-base --is-ancestor "$GITHUB_SHA" "refs/remotes/origin/$branch" || {
+            echo "Tag commit is not on $branch" >&2
+            exit 1
+          }
+          echo "PACKAGE_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+          echo "EXPECTED_RANGE=$range" >> "$GITHUB_ENV"
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: dotnet test Umbraco.Community.Unlog.slnx --configuration Release
+
+      - name: Pack
+        run: dotnet pack src/Umbraco.Community.Unlog/Umbraco.Community.Unlog.csproj --configuration Release --output artifacts -p:PackageVersion="$PACKAGE_VERSION"
+
+      - name: Validate package identity and compatibility
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+          import zipfile
+
+          version = os.environ['PACKAGE_VERSION']
+          expected_range = os.environ['EXPECTED_RANGE']
+          package = pathlib.Path('artifacts') / f'Umbraco.Community.Unlog.{version}.nupkg'
+          if not package.is_file():
+              sys.exit(f'Missing package: {package}')
+          with zipfile.ZipFile(package) as archive:
+              nuspec_paths = [name for name in archive.namelist() if name.endswith('.nuspec')]
+              if len(nuspec_paths) != 1:
+                  sys.exit(f'Expected one nuspec, got {nuspec_paths}')
+              root = ET.fromstring(archive.read(nuspec_paths[0]))
+              metadata = root.find('{*}metadata')
+              if metadata is None:
+                  sys.exit('Package has no metadata')
+              package_id = metadata.findtext('{*}id')
+              package_version = metadata.findtext('{*}version')
+              if package_id != 'Umbraco.Community.Unlog' or package_version != version:
+                  sys.exit(f'Unexpected package identity: {package_id} {package_version}')
+              dependencies = [item for item in metadata.findall('.//{*}dependency')
+                              if item.get('id', '').startswith('Umbraco.Cms.')]
+              if not dependencies or any(''.join((item.get('version') or '').split()) != expected_range
+                                         for item in dependencies):
+                  sys.exit(f'Umbraco dependency must use {expected_range}; found '
+                           f'{[(item.get("id"), item.get("version")) for item in dependencies]}')
+              required = {'README.md', 'icon.png', 'appsettings-schema.Umbraco.Community.Unlog.json',
+                          'buildTransitive/Umbraco.Community.Unlog.targets'}
+              missing = required.difference(archive.namelist())
+              if missing:
+                  sys.exit(f'Package is missing: {sorted(missing)}')
+          print(f'Validated {package}')
+          PY
+
+      - name: Log in to NuGet with GitHub OIDC
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Publish
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: dotnet nuget push "artifacts/Umbraco.Community.Unlog.${PACKAGE_VERSION}.nupkg" --source https://api.nuget.org/v3/index.json --api-key "$NUGET_API_KEY" --skip-duplicate

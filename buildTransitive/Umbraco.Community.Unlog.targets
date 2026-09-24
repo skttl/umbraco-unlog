@@ -1,0 +1,8 @@
+<Project>
+  <ItemGroup>
+    <UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\appsettings-schema.Umbraco.Community.Unlog.json"
+                            Weight="-10" />
+    <JsonSchemaSegment Include="$(MSBuildThisFileDirectory)..\appsettings-schema.Umbraco.Community.Unlog.json"
+                       FilePathPattern="appsettings(\..+)?\.json" />
+  </ItemGroup>
+</Project>

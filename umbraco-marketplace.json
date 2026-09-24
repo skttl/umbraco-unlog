@@ -1,0 +1,12 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "Title": "Unlog",
+  "Description": "Per-level retention for Umbraco's Serilog file logs, including files left by previous Azure workers.",
+  "Category": "Developer Tools",
+  "LicenseTypes": ["Free"],
+  "PackageType": "Package",
+  "DocumentationUrl": "https://github.com/skttl/umbraco-unlog/blob/main/docs/nuget-readme.md",
+  "IssueTrackerUrl": "https://github.com/skttl/umbraco-unlog/issues",
+  "Tags": ["logging", "retention", "serilog", "cleanup"],
+  "VersionDependencyMode": "SemVer"
+}

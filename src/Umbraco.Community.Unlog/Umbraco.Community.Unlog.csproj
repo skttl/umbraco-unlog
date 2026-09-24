@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+    <PackageId>Umbraco.Community.Unlog</PackageId>
+    <Version>18.0.0</Version>
+    <Authors>skttl</Authors>
+    <Description>Retention rules for Umbraco's Serilog file logs.</Description>
+    <PackageTags>umbraco;umbraco-marketplace;serilog;logging;retention</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/skttl/umbraco-unlog</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/skttl/umbraco-unlog</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[18.0.0,19.0.0)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/nuget-readme.md" Pack="true" PackagePath="README.md" />
+    <None Include="../../icon.png" Pack="true" PackagePath="icon.png" />
+    <None Include="../../appsettings-schema.Umbraco.Community.Unlog.json" Pack="true" PackagePath="appsettings-schema.Umbraco.Community.Unlog.json" />
+    <None Include="../../buildTransitive/Umbraco.Community.Unlog.targets" Pack="true" PackagePath="buildTransitive/Umbraco.Community.Unlog.targets" />
+  </ItemGroup>
+</Project>

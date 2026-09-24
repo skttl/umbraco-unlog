@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Umbraco.Community.Unlog/Umbraco.Community.Unlog.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Umbraco.Community.Unlog.Tests/Umbraco.Community.Unlog.Tests.csproj" />
+  </Folder>
+</Solution>

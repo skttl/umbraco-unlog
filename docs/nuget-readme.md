@@ -12,10 +12,10 @@ Add `Umbraco.Community.Unlog` to your Umbraco site. Choose a package version mat
 | 18 | `18.x.x` | `[18.0.0,19.0.0)` |
 
 ```sh
-dotnet add package Umbraco.Community.Unlog --version 18.0.0
+dotnet add package Umbraco.Community.Unlog --version 17.0.0
 ```
 
-Use a released version in place of `18.0.0` if that version is not available yet. NuGet may report a dependency warning if the application directly overrides the Umbraco range.
+Use a released version in place of `17.0.0` if that version is not available yet. NuGet may report a dependency warning if the application directly overrides the Umbraco range.
 
 ## Configure retention
 

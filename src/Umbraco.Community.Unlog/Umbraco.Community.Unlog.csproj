@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <PackageId>Umbraco.Community.Unlog</PackageId>
-    <Version>18.0.0</Version>
+    <Version>17.0.0</Version>
     <Authors>skttl</Authors>
     <Description>Retention rules for Umbraco's Serilog file logs.</Description>
     <PackageTags>umbraco;umbraco-marketplace;serilog;logging;retention</PackageTags>
@@ -19,7 +19,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[18.0.0,19.0.0)" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[17.0.0,18.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../../docs/nuget-readme.md" Pack="true" PackagePath="README.md" />

@@ -5,21 +5,30 @@ using Umbraco.Cms.Infrastructure.BackgroundJobs;
 namespace Umbraco.Community.Unlog.Integration;
 
 /// <summary>Runs on Umbraco's scheduling server; manual health check actions run locally.</summary>
-public sealed class UnlogJob : RecurringBackgroundJobBase
+public sealed class UnlogJob : IRecurringBackgroundJob
 {
     private readonly UnlogRunner _runner;
-    private readonly TimeSpan _delay;
 
     public UnlogJob(IConfiguration configuration, UnlogRunner runner)
-        : base(ReadSchedule(configuration, "Period", TimeSpan.FromDays(1), allowZero: false))
     {
         _runner = runner;
-        _delay = ReadSchedule(configuration, "Delay", TimeSpan.FromMinutes(15), allowZero: true);
+        Period = ReadSchedule(configuration, "Period", TimeSpan.FromDays(1), allowZero: false);
+        Delay = ReadSchedule(configuration, "Delay", TimeSpan.FromMinutes(15), allowZero: true);
     }
 
-    public override TimeSpan Delay => _delay;
+    public TimeSpan Period { get; }
 
-    public override async Task RunJobAsync(CancellationToken cancellationToken)
+    public TimeSpan Delay { get; }
+
+    public event EventHandler? PeriodChanged
+    {
+        add { }
+        remove { }
+    }
+
+    public Task RunJobAsync() => RunJobAsync(CancellationToken.None);
+
+    public async Task RunJobAsync(CancellationToken cancellationToken)
     {
         await _runner.RunAsync(cancellationToken);
     }

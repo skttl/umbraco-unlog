@@ -2,7 +2,7 @@
 
 Keep the useful log events and clear the noise on your own schedule. Unlog removes old entries from Umbraco's Serilog files by severity, including files left behind when an Azure worker's machine name changes.
 
-Install `Umbraco.Community.Unlog` from NuGet. Use a `17.x.x` package for Umbraco 17 or an `18.x.x` package for Umbraco 18. The package depends on the matching Umbraco major version.
+Install `Umbraco.Community.Unlog` from NuGet. Use a `17.x.x` package for Umbraco 17 or an `18.x.x` package for Umbraco 18. The package depends on the matching Umbraco major version and needs no backoffice setup.
 
 ## A simple retention policy
 
@@ -26,12 +26,12 @@ Add this to `appsettings.json`:
 }
 ```
 
-Rules apply to their level and lower levels. The shortest applicable retention wins. Here, Information and lower last 14 days, Warning lasts 30 days, and Error and Fatal last 90 days. `All` is the explicit catch-all rule. Without any rules, Unlog deletes nothing.
+Rules apply to their level and lower levels. The shortest applicable retention wins. Here, Information and lower last 14 days, Warning lasts 30 days, and Error and Fatal last 90 days. Choose from `Verbose`, `Debug`, `Information`, `Warning`, `Error`, `Fatal`, and the explicit catch-all level `All`. `Days` must be a positive whole number. Without any rules, Unlog deletes nothing.
 
-The first run starts 15 minutes after application startup; later runs happen every 24 hours by default. Both timings are configurable and take effect after an application restart. The Health Check shows the rules and can start a run on the current instance.
+The first run starts 15 minutes after application startup; later runs happen every 24 hours by default. Both timings are configurable and take effect after an application restart. Open Umbraco's Health Checks to see the active rules, configuration errors, and a **Run now** action for the current instance.
 
-Unlog touches only Umbraco's own `UmbracoFile` log files. It skips today's files and files in use, preserves a file if any event cannot be parsed, and deletes a file once no entries remain. Other log destinations, including Application Insights and Elmah, are outside its scope. It logs what each cleanup removed and reports problems in the application log.
+Unlog touches only Umbraco's own `UmbracoFile` log files. It uses each event's timestamp, scans files across previous machine names, skips today's files and files in use, preserves a file if any event cannot be parsed, and deletes a file once no entries remain. Other log destinations, including Application Insights and Elmah, are outside its scope. It logs what each cleanup removed and reports problems in the application log. Umbraco's own Serilog file retention still applies and may remove files earlier than these rules.
 
-The package includes an `appsettings.json` schema for configuration help in supporting editors. For more detail, see the [NuGet user guide](https://github.com/skttl/umbraco-unlog/blob/main/docs/nuget-readme.md).
+The package includes an `appsettings.json` schema for configuration help in supporting editors.
 
 Icon: ["File" by Mohamed Salah Hajji](https://thenounproject.com/icon/file-5074819/), supplied under a royalty-free license by the project owner.

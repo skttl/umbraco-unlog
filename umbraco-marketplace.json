@@ -7,6 +7,12 @@
   "PackageType": "Package",
   "DocumentationUrl": "https://github.com/skttl/umbraco-unlog/blob/main/docs/nuget-readme.md",
   "IssueTrackerUrl": "https://github.com/skttl/umbraco-unlog/issues",
+  "Screenshots": [
+    {
+      "ImageUrl": "https://raw.githubusercontent.com/skttl/umbraco-unlog/main/docs/images/health-check.png",
+      "Caption": "Unlog retention Health Check with active rules and a Run now action"
+    }
+  ],
   "Tags": ["logging", "retention", "serilog", "cleanup"],
   "VersionDependencyMode": "SemVer"
 }

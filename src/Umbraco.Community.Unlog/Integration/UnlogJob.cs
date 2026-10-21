@@ -1,10 +1,11 @@
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
+using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Infrastructure.BackgroundJobs;
 
 namespace Umbraco.Community.Unlog.Integration;
 
-/// <summary>Runs on Umbraco's scheduling server; manual health check actions run locally.</summary>
+/// <summary>Cleans the local file log on each instance; manual health check actions run locally.</summary>
 public sealed class UnlogJob : RecurringBackgroundJobBase
 {
     private readonly UnlogRunner _runner;
@@ -18,6 +19,8 @@ public sealed class UnlogJob : RecurringBackgroundJobBase
     }
 
     public override TimeSpan Delay => _delay;
+
+    public override ServerRole[] ServerRoles => Enum.GetValues<ServerRole>();
 
     public override async Task RunJobAsync(CancellationToken cancellationToken)
     {

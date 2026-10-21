@@ -28,7 +28,7 @@ Add this to `appsettings.json`:
 
 Rules apply to their level and lower levels. The shortest applicable retention wins. Here, Information and lower last 14 days, Warning lasts 30 days, and Error and Fatal last 90 days. Choose from `Verbose`, `Debug`, `Information`, `Warning`, `Error`, `Fatal`, and the explicit catch-all level `All`. `Days` must be a positive whole number. Without any rules, Unlog deletes nothing.
 
-The first run is attempted 15 minutes after application startup; later runs happen every 24 hours by default. A one-minute delay can suit local testing when startup completes quickly; the 15-minute default allows more time for slower environments. If startup checks are not ready, Umbraco may skip that attempt until the next period. Both timings are configurable and take effect after an application restart. Open Umbraco's Health Checks to see the active rules, configuration errors, and a **Run now** action for the current instance.
+The first run is attempted 15 minutes after application startup; later runs happen every 24 hours by default. A one-minute delay can suit local testing when startup completes quickly; the 15-minute default allows more time for slower environments. Umbraco may defer cleanup until its startup and scheduling checks allow it. Both timings are configurable and take effect after an application restart. Open Umbraco's Health Checks to see the active rules, configuration errors, and a **Run now** action for the current instance.
 
 ![Unlog Health Check showing retention rules and the Run now action](https://raw.githubusercontent.com/skttl/umbraco-unlog/main/docs/images/health-check.png)
 

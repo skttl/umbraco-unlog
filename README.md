@@ -2,6 +2,8 @@
 
 Unlog removes old entries from Umbraco's own Serilog file logs. This repository contains the package source, tests, configuration schema, and release workflow. For installation and configuration, see the [NuGet guide](docs/nuget-readme.md). The [Marketplace guide](umbraco-marketplace-readme.md) is written for package users browsing Umbraco Marketplace.
 
+![Unlog Health Check showing retention rules and the Run now action](docs/images/health-check.png)
+
 ## Repository layout
 
 - `src/Umbraco.Community.Unlog/` contains the NuGet library and Umbraco integration.

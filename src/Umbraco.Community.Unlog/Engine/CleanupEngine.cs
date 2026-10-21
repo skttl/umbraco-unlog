@@ -446,8 +446,15 @@ public sealed class CleanupEngine
 
     private static bool IsSharingViolation(IOException exception)
     {
-        var win32Code = exception.HResult & 0xFFFF;
-        return win32Code is 32 or 33; // ERROR_SHARING_VIOLATION or ERROR_LOCK_VIOLATION
+        if (OperatingSystem.IsWindows())
+        {
+            var win32Code = exception.HResult & 0xFFFF;
+            return win32Code is 32 or 33; // ERROR_SHARING_VIOLATION or ERROR_LOCK_VIOLATION
+        }
+
+        // Unix FileStream reports the raw EWOULDBLOCK errno, not a Win32 HRESULT.
+        var wouldBlock = OperatingSystem.IsMacOS() || OperatingSystem.IsFreeBSD() ? 35 : 11;
+        return exception.HResult == wouldBlock;
     }
 
     private static bool TryCreateFilePattern(string? fileNameFormat, out Regex? pattern, out string error)

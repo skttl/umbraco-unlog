@@ -1,0 +1,27 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+      - v17/main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Test
+        run: dotnet test Umbraco.Community.Unlog.slnx --configuration Release
+      - name: Pack
+        run: dotnet pack src/Umbraco.Community.Unlog/Umbraco.Community.Unlog.csproj --configuration Release --no-restore --output artifacts

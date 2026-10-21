@@ -77,6 +77,26 @@ public sealed class CleanupEngineTests
         Assert.Equal(0, result.DeletedEntries);
         Assert.True(File.Exists(old));
         Assert.True(File.Exists(today));
+        Assert.Empty(result.Errors);
+    }
+
+    [Fact]
+    public async Task SkipsCleanupWhenDirectoryLockIsHeld()
+    {
+        using var folder = new TempFolder();
+        var content = Entries(Event("2026-01-01T00:00:00Z", "Fatal", "keep while locked"));
+        var path = folder.Write("UmbracoTraceLog.WORKER.20260101.json", content);
+        using var heldLock = new FileStream(System.IO.Path.Combine(folder.Path, ".umbraco-unlog.lock"),
+            FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+
+        var result = await new CleanupEngine().RunAsync(folder.Path, Format,
+            [new() { Level = "All", Days = 1 }], Now);
+
+        Assert.True(result.SkippedDueToConcurrentRun);
+        Assert.Equal(0, result.ScannedFiles);
+        Assert.Equal(0, result.DeletedEntries);
+        Assert.Empty(result.Errors);
+        Assert.Equal(content, File.ReadAllText(path));
     }
 
     [Fact]

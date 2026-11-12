@@ -32,7 +32,7 @@ jobs:
             branch='v17/main'
             range='[17.0.0,18.0.0)'
           else
-            branch='main'
+            branch='v18/main'
             range='[18.0.0,19.0.0)'
           fi
           git merge-base --is-ancestor "$GITHUB_SHA" "refs/remotes/origin/$branch" || {

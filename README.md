@@ -15,7 +15,7 @@ Unlog removes old entries from Umbraco's own Serilog file logs. This repository 
 
 ## Develop locally
 
-Use the .NET 10 SDK. Build the package project with:
+Use the .NET 11 SDK, including the release candidate while .NET 11 is in preview. Build the package project with:
 
 ```sh
 dotnet build src/Umbraco.Community.Unlog/Umbraco.Community.Unlog.csproj
@@ -32,11 +32,11 @@ The cleanup code should treat log data as untrusted. Preserve the original file 
 
 ## Version lines and releases
 
-The `main` branch targets Umbraco 18. The `v17/main` branch targets Umbraco 17. When Umbraco 19 becomes the current version, branch `main` to `v18/main` before moving `main` forward.
+The `main` branch targets Umbraco 19. The `v18/main` branch targets Umbraco 18, and `v17/main` targets Umbraco 17.
 
-Both branches publish the same package ID. Package versions `17.x.x` require Umbraco in `[17.0.0,18.0.0)`; `18.x.x` require `[18.0.0,19.0.0)`. NuGet can report a dependency warning rather than reject installation when a consuming project directly overrides the Umbraco dependency range.
+All branches publish the same package ID. Package versions `17.x.x` require Umbraco in `[17.0.0,18.0.0)`; `18.x.x` require `[18.0.0,19.0.0)`; `19.x.x` currently require `[19.0.0-rc1,20.0.0)`. Unlog `19.0.0-rc1` targets the Umbraco 19 release candidate. NuGet can report a dependency warning rather than reject installation when a consuming project directly overrides the Umbraco dependency range.
 
-Push a tag such as `v17.0.0` from `v17/main` or `v18.0.0` from `main`. The [publish workflow](.github/workflows/publish.yml) checks the tag, branch ancestry, package ID, version, and Umbraco dependency range before it publishes. Do not reuse a version once nuget.org has accepted it.
+Push a tag such as `v17.0.0` from `v17/main`, `v18.0.0` from `v18/main`, or `v19.0.0-rc1` from `main`. The [publish workflow](.github/workflows/publish.yml) checks the tag, branch ancestry, package ID, version, and Umbraco dependency range before it publishes. Before the stable v19 release, raise the minimum Umbraco version to `19.0.0` in both the project and publish workflow. Do not reuse a version once nuget.org has accepted it.
 
 The repository owner must configure a [nuget.org trusted publishing policy](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing) with repository owner `skttl`, repository `umbraco-unlog`, workflow file `publish.yml`, and environment `release`. Create the `release` GitHub environment and set its `NUGET_USER` secret to the nuget.org account name that owns `Umbraco.Community.Unlog`. The workflow uses GitHub OIDC and a short-lived NuGet credential; it does not store a NuGet API key.
 

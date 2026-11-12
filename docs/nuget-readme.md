@@ -10,10 +10,10 @@ Add `Umbraco.Community.Unlog` to your Umbraco site. Choose a package version mat
 | --- | --- | --- |
 | 17 | `17.x.x` | `[17.0.0,18.0.0)` |
 | 18 | `18.x.x` | `[18.0.0,19.0.0)` |
-| 19 RC | `19.0.0-rc1` | `[19.0.0-rc1,20.0.0)` |
+| 19 RC | `19.0.0-beta01` | `[19.0.0-rc1,20.0.0)` |
 
 ```sh
-dotnet add package Umbraco.Community.Unlog --version 19.0.0-rc1
+dotnet add package Umbraco.Community.Unlog --version 19.0.0-beta01
 ```
 
 NuGet may report a dependency warning if the application directly overrides the Umbraco range.

@@ -1,0 +1,13 @@
+# Local configuration and generated Umbraco files
+appsettings.Local.json
+appsettings-schema*.json
+umbraco-package-schema.json
+/umbraco/Data/
+/umbraco/Logs/
+/wwwroot/media/
+
+# Clean package content copied during build
+/wwwroot/assets/
+/wwwroot/css/
+/Views/Components/Contact/
+/Views/Components/Pagination/

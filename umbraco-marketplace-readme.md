@@ -2,7 +2,7 @@
 
 Keep the useful log events and clear the noise on your own schedule. Unlog removes old entries from Umbraco's Serilog files by severity, including files left behind when an Azure worker's machine name changes.
 
-Install `Umbraco.Community.Unlog` from NuGet. Use a `17.x.x` package for Umbraco 17 or an `18.x.x` package for Umbraco 18. For testing Umbraco 19 RC on .NET 11, use `19.0.0-rc1`. The package depends on the matching Umbraco major version and needs no backoffice setup.
+Install `Umbraco.Community.Unlog` from NuGet. Use a `17.x.x` package for Umbraco 17 or an `18.x.x` package for Umbraco 18. For testing Umbraco 19 RC on .NET 11, use `19.0.0-beta01`. The package depends on the matching Umbraco major version and needs no backoffice setup.
 
 ## A simple retention policy
 

@@ -4,5 +4,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Umbraco.Community.Unlog.Tests/Umbraco.Community.Unlog.Tests.csproj" />
+    <Project Path="tests/Unlog.TestSite/Unlog.TestSite.csproj" />
   </Folder>
 </Solution>

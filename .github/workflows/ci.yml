@@ -23,7 +23,9 @@ jobs:
         with:
           dotnet-version: '11.0.x'
           dotnet-quality: 'preview'
+      - name: Build
+        run: dotnet build Umbraco.Community.Unlog.slnx --configuration Release
       - name: Test
-        run: dotnet test Umbraco.Community.Unlog.slnx --configuration Release
+        run: dotnet test Umbraco.Community.Unlog.slnx --configuration Release --no-build
       - name: Pack
         run: dotnet pack src/Umbraco.Community.Unlog/Umbraco.Community.Unlog.csproj --configuration Release --no-restore --output artifacts
